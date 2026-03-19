@@ -1,6 +1,7 @@
 package com.arturokumura.vidacare.services;
 
 import com.arturokumura.vidacare.model.Paciente;
+import com.arturokumura.vidacare.model.Telefone;
 import com.arturokumura.vidacare.repositories.PacienteRepository;
 import com.arturokumura.vidacare.services.exceptions.DatabaseException;
 import com.arturokumura.vidacare.services.exceptions.ResourceNotFoundException;
@@ -38,7 +39,7 @@ public class PacienteService {
         } catch (EmptyResultDataAccessException e) {
             throw new ResourceNotFoundException(id);
         } catch (DataIntegrityViolationException e ) {
-            throw new DatabaseException(e.getMessage());
+            throw new DatabaseException("Erro de integridade");
         }
     }
 
@@ -50,8 +51,19 @@ public class PacienteService {
     }
 
     private void updateData(Paciente entity, Paciente obj) {
-        entity.setNome(obj.getNome());
-        entity.setCpf(obj.getCpf());
-        entity.setTelefones(obj.getTelefones());
+        if (obj.getNome() != null) {
+            entity.setNome(obj.getNome());
+        }
+        if (obj.getCpf() != null) {
+            entity.setCpf(obj.getCpf());
+        }
+        if (obj.getTelefones() != null) {
+            entity.getTelefones().clear();
+
+            for (Telefone tel : obj.getTelefones()) {
+                tel.setPaciente(entity);
+                entity.getTelefones().add(tel);
+            }
+        }
     }
- }
+}
