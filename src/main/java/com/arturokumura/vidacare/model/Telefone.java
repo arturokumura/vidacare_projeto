@@ -37,6 +37,10 @@ public class Telefone {
         this.numero = numero;
     }
 
+    public void setPaciente(Paciente paciente) {
+        this.paciente = paciente;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Telefone{");
