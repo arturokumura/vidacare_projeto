@@ -3,6 +3,9 @@ package com.arturokumura.vidacare.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "atendimento")
@@ -12,19 +15,23 @@ public class Atendimento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String data_atendimento;
+    @NotNull
+    @Column(name = "data_atendiemento")
+    private LocalDateTime dataAtendimento;
 
     @ManyToOne
     @JoinColumn(name = "medico_id")
-    @JsonIgnore
     private Medico medico;
 
     @ManyToOne
     @JoinColumn (name = "paciente_id")
     private Paciente paciente;
 
-    public Atendimento(String data_atendimento) {
-        this.data_atendimento = data_atendimento;
+    public Atendimento() {
+    }
+
+    public Atendimento(LocalDateTime dataAtendimento) {
+        this.dataAtendimento = dataAtendimento;
     }
 
     public Long getId() {
@@ -35,12 +42,12 @@ public class Atendimento {
         this.id = id;
     }
 
-    public String getData_atendimento() {
-        return data_atendimento;
+    public LocalDateTime getDataAtendimento() {
+        return dataAtendimento;
     }
 
-    public void setData_atendimento(String data_atendimento) {
-        this.data_atendimento = data_atendimento;
+    public void setDataAtendimento(LocalDateTime dataAtendimento) {
+        this.dataAtendimento = dataAtendimento;
     }
 
     public Paciente getPaciente() {
@@ -63,9 +70,9 @@ public class Atendimento {
     public String toString() {
         final StringBuilder sb = new StringBuilder("Atendimento{");
         sb.append("id=").append(id);
-        sb.append(", data_atendimento='").append(data_atendimento).append('\'');
-        sb.append(", medico=").append(medico);
-        sb.append(", paciente=").append(paciente);
+        sb.append(", data_atendimento='").append(dataAtendimento).append('\'');
+        sb.append(", medicoId=").append(medico != null ? medico.getId() : null);
+        sb.append(", pacienteId=").append(paciente != null ? paciente.getId() : null);
         sb.append('}');
         return sb.toString();
     }
